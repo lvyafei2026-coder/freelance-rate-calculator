@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Freelance Rate Calculator — How Much Should You Charge Per Hour?</title>
+<meta name="description" content="Free freelance rate calculator. Enter your target income, billable hours, and business costs to find the hourly rate you actually need to charge.">
+<meta name="keywords" content="freelance rate calculator, freelance hourly rate, how much to charge freelance, consulting rate calculator, freelance pricing">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#4c1d95">
+
+<link rel="canonical" href="https://toolara.dev/freelance-rate-calculator/">
+<link rel="alternate" hreflang="en" href="https://toolara.dev/freelance-rate-calculator/">
+<link rel="alternate" hreflang="zh-Hans" href="https://toolara.dev/freelance-rate-calculator/zh/">
+<link rel="alternate" hreflang="x-default" href="https://toolara.dev/freelance-rate-calculator/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Freelance Rate Calculator — How Much Should You Charge Per Hour?">
+<meta property="og:description" content="Find the hourly rate you actually need to charge as a freelancer.">
+<meta property="og:url" content="https://toolara.dev/freelance-rate-calculator/">
+<meta property="og:locale" content="en_US">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Freelance Rate Calculator",
+  "url": "https://toolara.dev/freelance-rate-calculator/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "description": "Free calculator that tells freelancers the hourly rate they need to charge based on income goals and business costs.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="hero">
+  <div class="lang-switch">
+    <select id="langSelect" onchange="setLang(this.value)" aria-label="Language">
+      <option value="en">English</option>
+      <option value="zh">简体中文</option>
+    </select>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-badge">💼 Freelancer Tool</div>
+    <h1 data-i18n="title">Freelance Rate Calculator</h1>
+    <p data-i18n="subtitle">Find the hourly rate you actually need to charge — based on income goals, billable hours, and real business costs.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="card">
+    <h2 class="visually-hidden" data-i18n="calcHeading">Calculator</h2>
+
+    <label for="targetIncome" data-i18n="targetIncomeLabel">Target take-home income per year ($)</label>
+    <input type="number" id="targetIncome" min="0" step="1000" placeholder="80000" value="80000" inputmode="decimal">
+    <p class="hint" data-i18n="targetIncomeHint">Enter the amount you want to actually keep after taxes and business expenses.</p>
+
+    <div class="row">
+      <div>
+        <label for="billableHours" data-i18n="billableHoursLabel">Billable hours per week</label>
+        <input type="number" id="billableHours" min="1" max="80" step="1" placeholder="25" value="25" inputmode="numeric">
+      </div>
+      <div>
+        <label for="weeksOff" data-i18n="weeksOffLabel">Weeks off per year</label>
+        <input type="number" id="weeksOff" min="0" max="20" step="1" placeholder="4" value="4" inputmode="numeric">
+      </div>
+    </div>
+
+    <label for="industry" data-i18n="industryLabel">Industry benchmark</label>
+    <select id="industry">
+      <option value="generic" selected data-i18n="indGeneric">Generic / custom</option>
+      <option value="design" data-i18n="indDesign">Design &amp; branding</option>
+      <option value="dev" data-i18n="indDev">Development &amp; engineering</option>
+      <option value="writing" data-i18n="indWriting">Writing &amp; copywriting</option>
+      <option value="marketing" data-i18n="indMarketing">Marketing &amp; SEO</option>
+      <option value="consulting" data-i18n="indConsulting">Consulting &amp; strategy</option>
+      <option value="video" data-i18n="indVideo">Video &amp; motion</option>
+      <option value="photo" data-i18n="indPhoto">Photography</option>
+    </select>
+
+    <details class="advanced">
+      <summary data-i18n="advancedLabel">Advanced cost settings</summary>
+      <div class="row">
+        <div>
+          <label for="businessCosts" data-i18n="businessCostsLabel">Annual business costs ($)</label>
+          <input type="number" id="businessCosts" min="0" step="100" value="6000" inputmode="decimal">
+        </div>
+        <div>
+          <label for="taxRate" data-i18n="taxRateLabel">Tax rate (%)</label>
+          <input type="number" id="taxRate" min="0" max="60" step="1" value="30" inputmode="decimal">
+        </div>
+      </div>
+      <label for="profitMargin" data-i18n="profitMarginLabel">Desired profit margin (%)</label>
+      <input type="number" id="profitMargin" min="0" max="80" step="5" value="20" inputmode="decimal">
+      <p class="hint" data-i18n="advancedHint">Business costs include software, insurance, equipment, coworking, marketing, and professional development. Profit margin is what you set aside for slow months and reinvestment.</p>
+    </details>
+
+    <button class="calc" type="button" onclick="calculate()" data-i18n="calcBtn">Calculate my rate</button>
+
+    <div id="result" role="region" aria-live="polite">
+      <div class="result-label" data-i18n="resultLabel">Your minimum hourly rate</div>
+      <div class="rate-main" id="rateMain">—</div>
+      <div class="rate-note" id="rateNote"></div>
+
+      <div class="breakdown">
+        <div class="bd-row"><span data-i18n="bdBillable">Billable hours per year</span><strong id="bdBillable">—</strong></div>
+        <div class="bd-row"><span data-i18n="bdTarget">Target take-home</span><strong id="bdTarget">—</strong></div>
+        <div class="bd-row"><span data-i18n="bdTax">Taxes (grossed up)</span><strong id="bdTax">—</strong></div>
+        <div class="bd-row"><span data-i18n="bdCosts">Business costs</span><strong id="bdCosts">—</strong></div>
+        <div class="bd-row"><span data-i18n="bdMargin">Profit margin</span><strong id="bdMargin">—</strong></div>
+        <div class="bd-divider"></div>
+        <div class="bd-row bd-total"><span data-i18n="bdGross">Required gross income</span><strong id="bdGross">—</strong></div>
+      </div>
+
+      <div class="rate-tier">
+        <h3 data-i18n="tierTitle">Rate breakdown</h3>
+        <div class="tier-grid">
+          <div class="tier-item">
+            <div class="tier-key" data-i18n="tierHourly">Hourly</div>
+            <div class="tier-val" id="tierHourly">—</div>
+          </div>
+          <div class="tier-item">
+            <div class="tier-key" data-i18n="tierDaily">Daily (8h)</div>
+            <div class="tier-val" id="tierDaily">—</div>
+          </div>
+          <div class="tier-item">
+            <div class="tier-key" data-i18n="tierWeekly">Weekly</div>
+            <div class="tier-val" id="tierWeekly">—</div>
+          </div>
+          <div class="tier-item">
+            <div class="tier-key" data-i18n="tierMonthly">Monthly</div>
+            <div class="tier-val" id="tierMonthly">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="share-row">
+        <button class="share-btn" type="button" onclick="copyShareLink()" data-i18n="shareBtn">Copy shareable link</button>
+        <span class="share-copied" id="shareCopied" data-i18n="shareCopied">Copied!</span>
+      </div>
+
+      <div class="result-disclaimer" data-i18n="resultDisclaimer">Estimate only. This rate covers your costs and target income, but market rates may differ. Use it as a floor, not a ceiling.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-i18n="whyTitle">Why freelancers undercharge</h2>
+    <p data-i18n="whyText">Most freelancers set their rate by dividing their old salaried income by 2,080 hours. That's a mistake. As a freelancer, you're paying both the employee and employer side of taxes, covering your own benefits, and — most importantly — you only have a fraction of your week available as billable hours. Admin work, sales, invoicing, and learning eat up 40-60% of a typical freelance week.</p>
+  </section>
+
+  <section>
+    <h2 data-i18n="benchmarkTitle">Industry rate benchmarks (2026)</h2>
+    <table>
+      <thead>
+        <tr><th data-i18n="thIndustry">Industry</th><th data-i18n="thJunior">Junior</th><th data-i18n="thMid">Mid</th><th data-i18n="thSenior">Senior</th></tr>
+      </thead>
+      <tbody>
+        <tr><td data-i18n="indDesign">Design &amp; branding</td><td>$40–65</td><td>$65–110</td><td>$110–200</td></tr>
+        <tr><td data-i18n="indDev">Development</td><td>$50–80</td><td>$80–140</td><td>$140–250</td></tr>
+        <tr><td data-i18n="indWriting">Writing &amp; copy</td><td>$35–60</td><td>$60–100</td><td>$100–180</td></tr>
+        <tr><td data-i18n="indMarketing">Marketing &amp; SEO</td><td>$45–75</td><td>$75–130</td><td>$130–220</td></tr>
+        <tr><td data-i18n="indConsulting">Consulting &amp; strategy</td><td>$60–100</td><td>$100–180</td><td>$180–400</td></tr>
+        <tr><td data-i18n="indVideo">Video &amp; motion</td><td>$50–85</td><td>$85–150</td><td>$150–280</td></tr>
+        <tr><td data-i18n="indPhoto">Photography</td><td>$40–70</td><td>$70–120</td><td>$120–250</td></tr>
+      </tbody>
+    </table>
+    <p data-i18n="benchmarkNote">Rates in USD. Senior rates assume 5+ years of specialized experience and a portfolio of high-value clients.</p>
+  </section>
+
+  <section>
+    <h2 data-i18n="formulaTitle">The formula</h2>
+    <ul>
+      <li data-i18n="formula1"><strong>Billable hours per year:</strong> Billable hours/week × (52 − weeks off)</li>
+      <li data-i18n="formula2"><strong>Gross needed:</strong> (Target income ÷ (1 − tax rate)) + business costs</li>
+      <li data-i18n="formula3"><strong>With margin:</strong> Gross needed × (1 + profit margin)</li>
+      <li data-i18n="formula4"><strong>Hourly rate:</strong> Total gross needed ÷ billable hours per year</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 data-i18n="faqTitle">Frequently asked questions</h2>
+    <h3 data-i18n="faq1q">How many billable hours can a freelancer realistically work?</h3>
+    <p data-i18n="faq1a">Most full-time freelancers bill 20–30 hours per week, not 40. The rest goes to admin, marketing, invoicing, learning, and email. If you're just starting, assume 20 billable hours per week until you have a steady pipeline of clients.</p>
+
+    <h3 data-i18n="faq2q">Should I charge hourly, daily, or per project?</h3>
+    <p data-i18n="faq2a">All three have a place. Hourly is best for open-ended work where scope is unclear. Daily rates suit workshops, on-site work, and consulting. Project pricing works best when you have enough experience to estimate time accurately — it rewards efficiency.</p>
+
+    <h3 data-i18n="faq3q">What if my rate is higher than the market?</h3>
+    <p data-i18n="faq3a">The calculator gives you a floor, not a ceiling. If your calculated rate is above what the market pays, either (a) reduce costs, (b) increase billable hours, (c) specialize in a higher-value niche, or (d) accept a lower target income. Never lower your rate below your break-even point.</p>
+
+    <h3 data-i18n="faq4q">How often should I raise my rate?</h3>
+    <p data-i18n="faq4a">Once a year is a good minimum. Raise rates 5–15% annually, and more if you've added a new skill, niche, or portfolio piece that clearly increases your value. Existing clients can be given a 60-day notice; new clients pay the new rate immediately.</p>
+
+    <h3 data-i18n="faq5q">Do I need to add profit on top of my costs?</h3>
+    <p data-i18n="faq5a">Yes. Profit margin is your buffer for slow months, sick days, equipment failure, and reinvestment in your business. Aim for at least 20%. Some freelancers target 30–40% to build a real business rather than just replacing a salary.</p>
+
+    <div class="disclaimer" data-i18n="disclaimer"><strong>Disclaimer:</strong> This calculator provides estimates for planning purposes. Tax rates, business costs, and market rates vary widely by country and specialty. Consult a financial advisor for personalized guidance.</div>
+  </section>
+</main>
+
+<footer class="footer" data-i18n="footer">Runs entirely in your browser. No data is collected or stored.</footer>
+
+<script src="js/i18n.js"></script>
+<script src="js/calculator.js"></script>
+</body>
+</html>
